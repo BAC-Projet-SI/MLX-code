@@ -1,5 +1,6 @@
 #ifndef mlx_h
 #define mlx_h
+#endif
 
 #include "Arduino.h"
 #include "Wire.h"
@@ -45,11 +46,8 @@ private:
     void write16(uint8_t addr, uint16_t data);
 };
 
-#endif
-
 /* differentiel de temperature entre capteurs.
 
 32 -> 36.2
 
 */
-

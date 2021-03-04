@@ -33,8 +33,10 @@ double mlxInfra::readRawSensorData(void){
     return read16(IRdata1);
 }
 
-void mlxInfra::writeRawEmissivity(uint16_t ereg){
-    write16(EmissivityByte, 0); // envoie 0
+void mlxInfra::writeEmissivity(double emissivity){
+    uint16_t ereg = (uint16_t)(0xffff * emissivity); // convertion de double a uint16 x 0xffff
+
+    write16(EmissivityByte, 0); // reset en envoyant 0
     delay(10);
     write16(EmissivityByte, ereg);
     delay(10);
@@ -79,7 +81,7 @@ byte mlxInfra::crc8(byte *addr, byte len){
     return crc;
 }
 
-void Adafruit_MLX90614::write16(uint8_t a, uint16_t v) {
+void mlxInfra::write16(uint8_t a, uint16_t v) {
   uint8_t pec;
   uint8_t pecbuf[4];
 
