@@ -29,6 +29,17 @@ double mlxInfra::readRawEmissivity(void){
     return read16(EmissivityByte);
 }
 
+double mlxInfra::readRawSensorData(void){
+    return read16(IRdata1);
+}
+
+void mlxInfra::writeRawEmissivity(uint16_t ereg){
+    write16(EmissivityByte, 0); // envoie 0
+    delay(10);
+    write16(EmissivityByte, ereg);
+    delay(10);
+}
+
 // transform temperture from kelvin to celcius
 float mlxInfra::readTemp(uint8_t reg) {
     float temp;
@@ -66,6 +77,24 @@ byte mlxInfra::crc8(byte *addr, byte len){
         }
     }
     return crc;
+}
+
+void Adafruit_MLX90614::write16(uint8_t a, uint16_t v) {
+  uint8_t pec;
+  uint8_t pecbuf[4];
+
+  pecbuf[0] = _addr << 1;
+  pecbuf[1] = a;
+  pecbuf[2] = v & 0xff;
+  pecbuf[3] = v >> 8;
+  pec = crc8(pecbuf, sizeof pecbuf);
+
+  Wire.beginTransmission(_addr); // start transmission to device
+  Wire.write(a);                 // sends register address to write
+  Wire.write(v & 0xff);          // lo
+  Wire.write(v >> 8);            // hi
+  Wire.write(pec);               // pec
+  Wire.endTransmission(true);    // end transmission
 }
 
 

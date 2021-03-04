@@ -20,6 +20,9 @@ https://www.pololu.com/file/0J171/MLX90614_SMBus.pdf
 #define TObj1 0x07
 #define TObj2 0x08
 
+#define IRdata1 0x4
+#define IRdata2 0x5
+
 class mlxInfra {
 public:
     mlxInfra(uint8_t addr = I2CADDR);
@@ -27,6 +30,7 @@ public:
 
     double readObjTemp(void);
     double readObjTemp2(void);
+    double readRawSensorData(void);
     double readAmbiantTemp(void);
     double readEmissivity(void);
     double readRawEmissivity(void);
@@ -38,6 +42,7 @@ private:
     byte crc8(byte *addr, byte len);
     uint16_t read16(uint8_t addr);
     uint8_t _addr;
+    void write16(uint8_t addr, uint16_t data);
 };
 
 #endif
