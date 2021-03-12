@@ -27,12 +27,23 @@ void loop() {
 Temperture_obj = Temperture_obj + offset;
 
 Serial.println("");
-Serial.print("Temperature Objet: "); Serial.print(Temperture_obj); Serial.print("   offset: "); Serial.println(offset);
+Serial.print("Temperature Objet: "); Serial.println(Temperture_obj);
+Serial.print("Average body temperture: "); Serial.println(Body_Temperture_average());
 Serial.print("Temperature raw: "); Serial.println(Temperture_obj_raw); 
 Serial.println("");
 Serial.print("Room Temperture: "); Serial.println(Temperture_room);
-Serial.print("Object Emissivity: "); Serial.println(Emissivity);
-Serial.print("raw Emissivity: "); Serial.println(RawEmissivity);
+// Serial.print("Object Emissivity: "); Serial.println(Emissivity);
+// Serial.print("raw Emissivity: "); Serial.println(RawEmissivity);
 
 delay(800);
+}
+
+float Body_Temperture_average(){
+  float t = 0;
+  for(int i=0; i<10; i++){
+    t = t + Temperture_obj;
+  }
+  t = t/10;
+  //Serial.println(t);
+  return t;
 }
