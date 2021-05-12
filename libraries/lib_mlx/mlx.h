@@ -13,16 +13,18 @@ https://www.pololu.com/file/0J171/MLX90614_SMBus.pdf
 */
 #define I2CADDR 0x5A
 
-//EEPROM (values w/ write access) begin at 0x20 !
+//le capteur a deux memoire l'EEPROM et la RAM
+
+//EEPROM (valeurs accessibles a l'ecriture commencent a 0x20 !)
 #define EmissivityByte 0x24 //defaut 0xFFFF 
 
-//RAM registers (ne peux pas ecrire sur la ram, bit en lecture seule)
+//RAM registers (ne peux pas ecrire sur la ram, adresses en lecture seule)
 #define Ambiantbyte 0x06
 #define TObj1 0x07
-#define TObj2 0x08
+#define TObj2 0x08 //pas implementer sur ce modéle de capteur
 
 #define IRdata1 0x4
-#define IRdata2 0x5
+#define IRdata2 0x5 //pas implementer sur ce modéle de capteur
 
 class mlxInfra {
 public:

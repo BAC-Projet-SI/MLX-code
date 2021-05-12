@@ -12,10 +12,6 @@ double mlxInfra::readObjTemp(void){
     return readTemp(TObj1);
 }
 
-double mlxInfra::readObjTemp2(void){
-    return readTemp(TObj2);
-}
-
 double mlxInfra::readAmbiantTemp(void){
     return readTemp(Ambiantbyte);
 }
@@ -33,8 +29,9 @@ double mlxInfra::readRawSensorData(void){
     return read16(IRdata1);
 }
 
+
 void mlxInfra::writeEmissivity(double emissivity){
-    uint16_t ereg = (uint16_t)(0xffff * emissivity); // convertion de double a uint16 x 0xffff
+   uint16_t ereg = (uint16_t)(0xffff * emissivity); // convertion de double a uint16 x 0xffff
 
     write16(EmissivityByte, 0); // reset en envoyant 0
     delay(10);
@@ -45,6 +42,7 @@ void mlxInfra::writeEmissivity(double emissivity){
 // transform temperture from kelvin to celcius
 float mlxInfra::readTemp(uint8_t reg) {
     float temp;
+
     temp = read16(reg);
     temp *= .02;
     temp -= 273.15;
@@ -80,6 +78,24 @@ byte mlxInfra::crc8(byte *addr, byte len){
     }
     return crc;
 }
+
+//void mlxInfra::write16(uint8_t a, uint16_t v) {
+//  uint8_t pec;
+//  uint8_t pecbuf[4];
+
+//  pecbuf[0] = _addr << 1;
+//  pecbuf[1] = a;
+//  pecbuf[2] = v & 0xff;
+//  pecbuf[3] = v >> 8;
+//  pec = crc8(pecbuf, sizeof pecbuf);
+
+//  Wire.beginTransmission(_addr); // start transmission to device
+//  Wire.write(a);                 // sends register address to write
+//  Wire.write(v & 0xff);          // lo
+//  Wire.write(v >> 8);            // hi
+//  Wire.write(pec);               // pec
+//  Wire.endTransmission(true);    // end transmission
+//}
 
 void mlxInfra::write16(uint8_t a, uint16_t v) {
   uint8_t pec;

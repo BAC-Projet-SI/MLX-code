@@ -1,48 +1,48 @@
 #include <Wire.h>
 #include <mlx.h>
 
+#define trigPin 3
+#define echoPin 2
+
 mlxInfra mlx = mlxInfra();
 
+double distance;
+double minDist = 10;
 double Temperture_room = 0;
 double Temperture_obj = 0;
-double Temperture_obj_raw = 0;
-double Emissivity = 0.995;
-float offset = 0;
-uint16_t RawEmissivity = 0;
+float offset = 6;
 
 void setup() {
+  pinMode(trigPin, OUTPUT);
+  pinMode(echoPin, INPUT);
+
   Serial.begin(9600);
   mlx.begin();
-
-  mlx.writeEmissivity(Emissivity);
+  Serial.println("Setup done");
 }
 
 void loop() {
 
  Temperture_room = mlx.readAmbiantTemp();
- Temperture_obj = mlx.readObjTemp2();
- Temperture_obj_raw = mlx.readRawSensorData();
- Emissivity = mlx.readEmissivity();
- RawEmissivity = mlx.readRawEmissivity();
+ Temperture_obj = mlx.readObjTemp();
 
 //apply Temperture correction
 Temperture_obj = Temperture_obj + offset;
 
+while (DistanceFromUser() > minDist){
+  //Serial.println(DistanceFromUser());
+  Serial.println("L'utilisateur est trop loin !");
+  delay(800);
+}
+
 Serial.println("");
 Serial.print("Temperature Objet: "); Serial.println(Temperture_obj);
-//Serial.print("Average body temperture: "); Serial.println(Body_Temperture_average());
-//Serial.print("Temperature raw: "); Serial.println(Temperture_obj_raw); 
-//Serial.println("");
-//Serial.print("Room Temperture: "); Serial.println(Temperture_room);
-// Serial.print("Object Emissivity: "); Serial.println(Emissivity);
-// Serial.print("raw Emissivity: "); Serial.println(RawEmissivity);
-
 delay(800);
 
-if(mlx.readObjTemp() >= 382.19){
-  Serial.println("Error!");
-  return setup();
-}
+//if(mlx.readObjTemp() >= 482.19 || mlx.readObjTemp() >=-300){
+  //Serial.println("Error");
+  //return setup();
+//}
 
 }
 
@@ -55,4 +55,17 @@ float Body_Temperture_average(){
   t = t/10;
   //Serial.println(t);
   return t;
+}
+
+double DistanceFromUser(){
+  long duration;
+
+  digitalWrite(trigPin, LOW);
+  delayMicroseconds(2);
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin, LOW);
+  duration = pulseIn(echoPin, HIGH);
+  distance = duration * 0.034 / 2;
+  return distance;
 }
