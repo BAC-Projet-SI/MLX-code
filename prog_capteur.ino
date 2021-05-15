@@ -3,19 +3,21 @@
 
 #define trigPin 3
 #define echoPin 2
+#define numReading 10
 
 mlxInfra mlx = mlxInfra();
 
+const String location = "Default";
 double distance;
 double minDist = 10;
 double Temperture_room = 0;
 double Temperture_obj = 0;
 float offset = 6;
 
+
 void setup() {
   pinMode(trigPin, OUTPUT);
   pinMode(echoPin, INPUT);
-
   Serial.begin(9600);
   mlx.begin();
   Serial.println("Setup done");
@@ -36,25 +38,19 @@ while (DistanceFromUser() > minDist){
 }
 
 Serial.println("");
-Serial.print("Temperature Objet: "); Serial.println(Temperture_obj);
+Serial.print("Temperature Objet: "); Serial.println(Body_Temperture_average());
 delay(800);
-
-//if(mlx.readObjTemp() >= 482.19 || mlx.readObjTemp() >=-300){
-  //Serial.println("Error");
-  //return setup();
-//}
-
 }
 
-float Body_Temperture_average(){
-  float t = 0;
-  for(int i=0; i<10; i++){
-    t = t + Temperture_obj;
-    delay(20);
+double Body_Temperture_average(){
+  double tempReading = 0;
+  double average = 0;
+  for(int i = 0; i <= numReading; i++){
+    tempReading = tempReading + Temperture_obj;
+    delay(1);
   }
-  t = t/10;
-  //Serial.println(t);
-  return t;
+  average = tempReading / numReading;
+  return average;
 }
 
 double DistanceFromUser(){
@@ -68,4 +64,8 @@ double DistanceFromUser(){
   duration = pulseIn(echoPin, HIGH);
   distance = duration * 0.034 / 2;
   return distance;
+}
+
+void Send_temperture(){
+
 }
