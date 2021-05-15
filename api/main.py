@@ -16,14 +16,10 @@ def get_device():
 
 @app.route('/temperture', methods=['POST'])
 def insert_device():
-    name = request.form["name"]
+    name = request.form["location"]
     reading = request.form["reading"]
     result = db.insert_device(name, reading)
     return jsonify(result)
-    
-@app.route('/temperture', methods=['PUT'])
-def update_device():
-    id = 
 
 @app.errorhandler(404)
 def page_not_found(e):

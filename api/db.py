@@ -9,27 +9,28 @@ def get_db():
 def create_tables():
     sql_query = """ CREATE TABLE IF NOT EXISTS readings(
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name TEXT NOT NULL,
-            reading REAL NOT NULL
+            location TEXT NOT NULL,
+            reading REAL NOT NULL,
+            timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
         """
     db = get_db()
     cursor = db.cursor()
     cursor.execute(sql_query)
 
-def insert_device(name, reading):
+def insert_device(location, reading):
     db = get_db()
     cursor = db.cursor()
-    statement = "INSERT INTO readings(name, reading) VALUES (?, ?)"
-    cursor.execute(statement, [name, reading])
+    statement = "INSERT INTO readings(location, reading) VALUES (?, ?)"
+    cursor.execute(statement, [location, reading])
     db.commit()
     return True
 
-def update_device(id, name, reading):
+def update_device(id, location, reading):
     db = get_db()
     cursor = db.cursor()
     statement = "UPDATE readings SET name = ?, reading = ? WHERE id = ?"
-    cursor.execute(statement, [name, reading, id])
+    cursor.execute(statement, [location, reading, id])
     db.commit()
     return True
 
