@@ -37,8 +37,14 @@ while (DistanceFromUser() > minDist){
   delay(800);
 }
 
-Serial.println("");
+if(Body_Temperture_average() > 37){
+  Send_temperture();
+  Serial.println("/!\\ Temperature trop élevé !");
+} else {
+  Serial.println("");
 Serial.print("Temperature Objet: "); Serial.println(Body_Temperture_average());
+}
+
 delay(800);
 }
 
