@@ -29,30 +29,37 @@ void loop() {
  Temperture_room = mlx.readAmbiantTemp();
  Temperture_obj = mlx.readObjTemp();
 
-//apply Temperture correction
+//an offset is needed for humain temperture as the inside temperture is quite different from the surface temperture
 Temperture_obj = Temperture_obj + offset;
 
+// send to the API that there is no more gel in stock and that it need a refil
 if(IsEmpty()){
   //Send to the API
 }
 
+// stop the program from running if theres nobody there
 while (DistanceFromUser() > minDist){
-  //Serial.println(DistanceFromUser());
+  
   Serial.println("L'utilisateur est trop loin !");
   delay(800);
+
 }
 
-if(Body_Temperture_average() > 37){
+if(Body_Temperture_average() > 37)
+{
   Send_ToAPI();
   Serial.println("/!\\ Temperature trop élevé !");
-} else {
+}
+else
+{
   Serial.println("");
-Serial.print("Temperature Objet: "); Serial.println(Body_Temperture_average());
+  Serial.print("Temperature Objet: "); Serial.println(Body_Temperture_average());
 }
 
 delay(800);
 }
 
+// calculate the temperture average over multiple mesurements to avoid errors
 double Body_Temperture_average(){
   double tempReading = 0;
   double average = 0;
@@ -64,6 +71,7 @@ double Body_Temperture_average(){
   return average;
 }
 
+//calculate the distance btw the user and the ultrasonic sensor
 double DistanceFromUser(){
   long duration;
 
@@ -77,6 +85,7 @@ double DistanceFromUser(){
   return distance;
 }
 
+//check if the gel container is empty
 bool IsEmpty() {
   int _distance = 0;
   _distance = analogRead(potentiometer);
@@ -88,6 +97,7 @@ bool IsEmpty() {
   }
 }
 
+//send HTTP request to the API
 void Send_ToAPI(){
 
 }
