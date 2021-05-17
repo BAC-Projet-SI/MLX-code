@@ -16,9 +16,10 @@ def get_device():
 
 @app.route('/temperture', methods=['POST'])
 def insert_device():
-    name = request.form["location"]
+    location = request.form["location"]
     reading = request.form["reading"]
-    result = db.insert_device(name, reading)
+    isEmpty = request.form["isEmpty"]
+    result = db.insert_device(location, reading, isEmpty)
     return jsonify(result)
 
 @app.errorhandler(404)

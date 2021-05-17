@@ -11,6 +11,7 @@ def create_tables():
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             location TEXT NOT NULL,
             reading REAL NOT NULL,
+            isEmpty BOOL NOT NULL,
             timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
         """
@@ -18,19 +19,19 @@ def create_tables():
     cursor = db.cursor()
     cursor.execute(sql_query)
 
-def insert_device(location, reading):
+def insert_device(location, reading, isEmpty):
     db = get_db()
     cursor = db.cursor()
-    statement = "INSERT INTO readings(location, reading) VALUES (?, ?)"
-    cursor.execute(statement, [location, reading])
+    statement = "INSERT INTO readings(location, reading, isEmpty) VALUES (?, ?, ?)"
+    cursor.execute(statement, [location, reading, isEmpty])
     db.commit()
     return True
 
-def update_device(id, location, reading):
+def update_device(id, location, reading, isEmpty):
     db = get_db()
     cursor = db.cursor()
-    statement = "UPDATE readings SET name = ?, reading = ? WHERE id = ?"
-    cursor.execute(statement, [location, reading, id])
+    statement = "UPDATE readings SET location = ?, reading = ?, isEmpty = ?, WHERE id = ?"
+    cursor.execute(statement, [location, reading, isEmpty, id])
     db.commit()
     return True
 
@@ -45,7 +46,7 @@ def delete_device(id):
 def get_by_id(id):
     db = get_db()
     cursor = db.cursor()
-    statement = "SELECT id, name, reading FROM readings WHERE id = ?"
+    statement = "SELECT id, location, reading, isEmpty, FROM readings WHERE id = ?"
     cursor.execute(statement, [id])
     return cursor.fetchone()
 
