@@ -4,7 +4,7 @@
 #define trigPin 3
 #define echoPin 2
 #define numReading 10
-
+#define potentiometer 0
 mlxInfra mlx = mlxInfra();
 
 const String location = "Default";
@@ -18,6 +18,7 @@ float offset = 6;
 void setup() {
   pinMode(trigPin, OUTPUT);
   pinMode(echoPin, INPUT);
+  pinMode(potentiometer, INPUT);
   Serial.begin(9600);
   mlx.begin();
   Serial.println("Setup done");
@@ -31,6 +32,10 @@ void loop() {
 //apply Temperture correction
 Temperture_obj = Temperture_obj + offset;
 
+if(IsEmpty()){
+  //Send to the API
+}
+
 while (DistanceFromUser() > minDist){
   //Serial.println(DistanceFromUser());
   Serial.println("L'utilisateur est trop loin !");
@@ -38,7 +43,7 @@ while (DistanceFromUser() > minDist){
 }
 
 if(Body_Temperture_average() > 37){
-  Send_temperture();
+  Send_ToAPI();
   Serial.println("/!\\ Temperature trop élevé !");
 } else {
   Serial.println("");
@@ -72,6 +77,17 @@ double DistanceFromUser(){
   return distance;
 }
 
-void Send_temperture(){
+bool IsEmpty() {
+  int _distance = 0;
+  _distance = analogRead(potentiometer);
+
+  if(_distance < 80){
+    return true;
+  }else {
+    return false;
+  }
+}
+
+void Send_ToAPI(){
 
 }
