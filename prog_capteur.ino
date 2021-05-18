@@ -1,11 +1,17 @@
 #include <Wire.h>
 #include <mlx.h>
+#include <SoftwareSerial.h>
 
 #define trigPin 3
 #define echoPin 2
 #define numReading 10
 #define potentiometer 0
 mlxInfra mlx = mlxInfra();
+
+const char* SSID = "";
+const char* PASSWORD = "";
+const char* HOST = "api.lordva.com";
+const char* PORT = "5000";
 
 const String location = "Default";
 double distance;
@@ -98,6 +104,8 @@ bool IsEmpty() {
 }
 
 //send HTTP request to the API
+
+// SENSOR INFO : ESP-01 https://create.arduino.cc/projecthub/imjeffparedes/add-wifi-to-arduino-uno-663b9e
 void Send_ToAPI(){
 
 }
