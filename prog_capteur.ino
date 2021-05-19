@@ -1,6 +1,5 @@
 #include <Wire.h>
 #include <mlx.h>
-#include <SoftwareSerial.h>
 
 #define trigPin 3
 #define echoPin 2
